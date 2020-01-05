@@ -1,74 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import Button from '@material-ui/core/Button';
-
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
-import WorkIcon from '@material-ui/icons/Work';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    marginTop: '10px',
-    maxWidth: 600,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+import JoinWaitlistModal from './JoinWaitlistModal';
+import WaitlistTable from './WaitlistTable';
+
+import Grid from '@material-ui/core/Grid';
 
 export default function CustomerWaitlist() {
-  const { restaurant } = useParams();
-  
-  return (
-    <div>
-      <h1> Customer Waitlist for: {restaurant} </h1>
-      <Button variant="contained" color="primary">
-        Join the Waitlist
-      </Button>
-      <FolderList />
-    </div>
-  );
-}
+  const [ isModalShow, setIsModalShow ] = useState(false);
+  //TODO: add useEffect to get from the API
 
-// Todo: refactor to loop
-// Todo: refactor to include waitlist information
-function FolderList() {
+  const { restaurant } = useParams();
+  const useStyles = makeStyles({
+    waitlistTitle: {
+      fontSize: '50px',
+      color: '#fff'
+    },
+    waitlistButton: {
+      width: '75%'
+    }
+  });
   const classes = useStyles();
 
+  const handleWaitlistClick = (event) => {
+    event.preventDefault();
+    setIsModalShow(true);
+  }
+
+  const handleModalCloseClick = (event) => {
+    event.preventDefault();
+    setIsModalShow(false);
+  }
+
   return (
-    <Grid container justify = "center">
-      <List className={classes.root}>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <WorkIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Work" secondary="Jan 7, 2014" />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <BeachAccessIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Vacation" secondary="July 20, 2014" />
-        </ListItem>
-      </List>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <JoinWaitlistModal isModalShow={isModalShow} handleModalCloseClick={handleModalCloseClick} restaurant={restaurant} /> 
+      <h1 className={classes.waitlistTitle}> { restaurant } Waitlist</h1>
+      <Button onClick={handleWaitlistClick} className={classes.waitlistButton} variant="contained" color="primary">
+        Join the Waitlist
+      </Button>
+      <WaitlistTable />
     </Grid>
   );
 }
