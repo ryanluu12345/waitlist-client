@@ -52,14 +52,19 @@ export default function JoinWaitlistModal(props) {
   };
 
   const handleSubmit = event => {
-    console.log(inputs);
-    axios.post(
-      "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist",
-      {
-        ...inputs,
-        restaurant: "Tasty Garden"
-      }
-    );
+    axios
+      .post(
+        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist",
+        {
+          ...inputs,
+          restaurant: "Tasty Garden"
+        }
+      )
+      .then(data => {
+        handleModalCloseClick(event);
+        window.location.reload(true);
+      })
+      .catch(err => console.log(err));
   };
 
   return (

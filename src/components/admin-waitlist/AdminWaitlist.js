@@ -11,6 +11,8 @@ export default function AdminWaitlist() {
   const { restaurant } = useParams();
   const [tableItems, setTableItems] = useState([]);
 
+  //TODO: package this into a helper hook
+  //TOOD: package all network requests into their own hooks that have loading, error handling, and data
   useEffect(() => {
     axios
       .get(
