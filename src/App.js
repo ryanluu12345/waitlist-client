@@ -16,7 +16,6 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/waitlist/:restaurant" component={CustomerWaitlist} />
           <Route path="/admin-waitlist/:restaurant" component={AdminWaitlist} />
-          <Route path="/restaurant-selection" component={RestaurantSelection} />
         </Switch>
       </Router>
     </div>
