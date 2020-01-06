@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 
+import {
+  updateWaitlistStatus,
+  getAllWaitlist
+} from "../../hooks/networking/waitlist-networking-helper";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
@@ -9,18 +14,22 @@ import AdminWaitlistTable from "./AdminWaitlistTable";
 
 export default function AdminWaitlist() {
   const { restaurant } = useParams();
-  const [tableItems, setTableItems] = useState([]);
+  const [waitlistItems, setWaitlistItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  //TODO: package this into a helper hook
-  //TOOD: package all network requests into their own hooks that have loading, error handling, and data
   useEffect(() => {
-    axios
-      .get(
-        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist"
-      )
-      .then(res => {
-        setTableItems(res.data.data.Items);
-      });
+    const getFromWaitlist = async () => {
+      try {
+        setIsLoading(true);
+        const res = await getAllWaitlist();
+        setWaitlistItems(res ? res.data.data.Items : []);
+      } catch (error) {
+        setError(error);
+      }
+      setIsLoading(false);
+    };
+    getFromWaitlist();
   }, []);
 
   const useStyles = makeStyles({
@@ -34,43 +43,31 @@ export default function AdminWaitlist() {
   });
   const classes = useStyles();
 
-  //TODO: make request to update status in DB
   const handleCallClick = (index, id) => {
-    axios
-      .put(
-        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist/" +
-          id,
-        {
-          status: {
-            ...tableItems[index].Status,
-            called: 1
-          }
-        }
-      )
-      .then(res => {
-        const newItems = [...tableItems];
-        newItems[index] = res.data.data.Attributes;
-        setTableItems(newItems);
-      });
+    updateWaitlistStatus(id, {
+      status: {
+        ...waitlistItems[index].Status,
+        called: 1
+      }
+    }).then(res => {
+      const newItems = [...waitlistItems];
+      newItems[index] = res.data.data.Attributes;
+      setWaitlistItems(newItems);
+    });
   };
 
   const handleSeatedClick = (index, id) => {
-    axios
-      .put(
-        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist/" +
-          id,
-        {
-          status: {
-            ...tableItems[index].Status,
-            seated: 1,
-            queued: 0
-          }
-        }
-      )
+    updateWaitlistStatus(id, {
+      status: {
+        ...waitlistItems[index].Status,
+        seated: 1,
+        queued: 0
+      }
+    })
       .then(res => {
-        const newItems = [...tableItems];
+        const newItems = [...waitlistItems];
         newItems[index] = res.data.data.Attributes;
-        setTableItems(newItems);
+        setWaitlistItems(newItems);
       })
       .catch(err => console.log(err));
   };
@@ -80,10 +77,12 @@ export default function AdminWaitlist() {
       <h1 className={classes.waitlistTitle}>
         Manage Your {restaurant} Waitlist
       </h1>
+      {error && "Error component"}
+      {isLoading && "I am loading"}
       <AdminWaitlistTable
         handleSeatedClick={handleSeatedClick}
         handleCallClick={handleCallClick}
-        tableItems={tableItems}
+        tableItems={waitlistItems}
       />
     </Grid>
   );

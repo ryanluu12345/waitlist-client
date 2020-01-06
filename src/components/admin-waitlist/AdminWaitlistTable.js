@@ -14,6 +14,7 @@ import EventSeatRoundedIcon from "@material-ui/icons/EventSeatRounded";
 
 export default function AdminWaitlistTable(props) {
   const { tableItems, handleCallClick, handleSeatedClick } = props;
+
   const useStyles = makeStyles({
     table: {
       width: "90%"

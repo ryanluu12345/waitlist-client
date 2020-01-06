@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { addToWaitlist } from "../../hooks/networking/waitlist-networking-helper";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
@@ -52,14 +54,10 @@ export default function JoinWaitlistModal(props) {
   };
 
   const handleSubmit = event => {
-    axios
-      .post(
-        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist",
-        {
-          ...inputs,
-          restaurant: "Tasty Garden"
-        }
-      )
+    addToWaitlist({
+      ...inputs,
+      restaurant: "Tasty Garden"
+    })
       .then(data => {
         handleModalCloseClick(event);
         window.location.reload(true);

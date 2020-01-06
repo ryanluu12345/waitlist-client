@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
+import { useGetAllWaitlist } from "../../hooks/networking/waitlist-networking-helper";
+
 import { useParams } from "react-router";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,17 +13,9 @@ import Grid from "@material-ui/core/Grid";
 
 export default function CustomerWaitlist() {
   const [isModalShow, setIsModalShow] = useState(false);
-  const [tableItems, setTableItems] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/waitlist"
-      )
-      .then(res => {
-        setTableItems(res.data.data.Items);
-      });
-  }, []);
+  const { response, error, isLoading } = useGetAllWaitlist();
+  const waitlistItems = response ? response.data.Items : [];
 
   const { restaurant } = useParams();
   const useStyles = makeStyles({
@@ -61,7 +55,9 @@ export default function CustomerWaitlist() {
       >
         Join the Waitlist
       </Button>
-      <WaitlistTable tableItems={tableItems}/>
+      {isLoading && "still loading"}
+      {error && "There is error"}
+      <WaitlistTable tableItems={waitlistItems} />
     </Grid>
   );
 }
