@@ -1,12 +1,11 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
-import Home from './components/home/home';
-import CustomerWaitlist from './components/customer-waitlist/CustomerWaitlist';
-import AdminWaitlist from './components/admin-waitlist/AdminWaitlist';
-import RestaurantSelection from './components/restaurant-selection/RestaurantSelection';
+import Home from "./components/home/home";
+import CustomerWaitlist from "./components/customer-waitlist/CustomerWaitlist";
+import AdminWaitlist from "./components/admin-waitlist/AdminWaitlist";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
