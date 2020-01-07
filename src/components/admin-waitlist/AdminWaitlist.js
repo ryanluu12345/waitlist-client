@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router";
 
 import {
@@ -9,6 +8,7 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import AdminWaitlistTable from "./AdminWaitlistTable";
 
@@ -39,6 +39,9 @@ export default function AdminWaitlist() {
     },
     waitlistButton: {
       width: "75%"
+    },
+    spinnerBack: {
+      color: "#fff"
     }
   });
   const classes = useStyles();
@@ -74,12 +77,13 @@ export default function AdminWaitlist() {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">
-      <h1 className={classes.waitlistTitle}>
+      <h2 className={classes.waitlistTitle}>
         Manage Your {restaurant} Waitlist
-      </h1>
+      </h2>
       {error && "Error component"}
-      {isLoading && "I am loading"}
+      {isLoading && <CircularProgress className={classes.spinnerBack} />}
       <AdminWaitlistTable
+        isLoading={isLoading}
         handleSeatedClick={handleSeatedClick}
         handleCallClick={handleCallClick}
         tableItems={waitlistItems}

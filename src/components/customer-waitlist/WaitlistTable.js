@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 export default function WaitlistTable(props) {
-  const { tableItems } = props;
+  const { tableItems, isLoading } = props;
 
   const useStyles = makeStyles({
     table: {
@@ -26,10 +26,12 @@ export default function WaitlistTable(props) {
     <TableContainer className={classes.tableContainer} component={Paper}>
       <Table align="center" className={classes.table} aria-label="simple table">
         <TableHead>
-          <TableRow>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Party Size</TableCell>
-          </TableRow>
+          {!isLoading && (
+            <TableRow>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Party Size</TableCell>
+            </TableRow>
+          )}
         </TableHead>
         <TableBody>
           {tableItems &&

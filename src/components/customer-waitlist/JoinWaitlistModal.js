@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { addToWaitlist } from "../../hooks/networking/waitlist-networking-helper";
 
 import { makeStyles } from "@material-ui/core/styles";

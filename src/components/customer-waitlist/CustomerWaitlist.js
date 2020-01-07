@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-
+import { useParams } from "react-router";
 import { useGetAllWaitlist } from "../../hooks/networking/waitlist-networking-helper";
 
-import { useParams } from "react-router";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import JoinWaitlistModal from "./JoinWaitlistModal";
 import WaitlistTable from "./WaitlistTable";
@@ -25,6 +25,9 @@ export default function CustomerWaitlist() {
     },
     waitlistButton: {
       width: "75%"
+    },
+    spinnerBack: {
+      color: "#fff"
     }
   });
   const classes = useStyles();
@@ -46,7 +49,7 @@ export default function CustomerWaitlist() {
         handleModalCloseClick={handleModalCloseClick}
         restaurant={restaurant}
       />
-      <h1 className={classes.waitlistTitle}> {restaurant} Waitlist</h1>
+      <h2 className={classes.waitlistTitle}> {restaurant} Waitlist</h2>
       <Button
         onClick={handleWaitlistClick}
         className={classes.waitlistButton}
@@ -55,9 +58,9 @@ export default function CustomerWaitlist() {
       >
         Join the Waitlist
       </Button>
-      {isLoading && "still loading"}
+      {isLoading && <CircularProgress className={classes.spinnerBack} />}
       {error && "There is error"}
-      <WaitlistTable tableItems={waitlistItems} />
+      <WaitlistTable tableItems={waitlistItems} isLoading={isLoading} />
     </Grid>
   );
 }

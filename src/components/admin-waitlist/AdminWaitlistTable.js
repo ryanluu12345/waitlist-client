@@ -13,7 +13,7 @@ import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
 import EventSeatRoundedIcon from "@material-ui/icons/EventSeatRounded";
 
 export default function AdminWaitlistTable(props) {
-  const { tableItems, handleCallClick, handleSeatedClick } = props;
+  const { isLoading, tableItems, handleCallClick, handleSeatedClick } = props;
 
   const useStyles = makeStyles({
     table: {
@@ -39,15 +39,17 @@ export default function AdminWaitlistTable(props) {
     <TableContainer className={classes.tableContainer} component={Paper}>
       <Table align="center" className={classes.table} aria-label="simple table">
         <TableHead>
-          <TableRow>
-            <TableCell align="center">Call</TableCell>
-            <TableCell align="center">Mark as Seated</TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Party Size</TableCell>
-            <TableCell align="center">Phone Number</TableCell>
-            <TableCell align="center">Called</TableCell>
-            <TableCell align="center">Seated</TableCell>
-          </TableRow>
+          {!isLoading && (
+            <TableRow>
+              <TableCell align="center">Call</TableCell>
+              <TableCell align="center">Mark as Seated</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Party Size</TableCell>
+              <TableCell align="center">Phone Number</TableCell>
+              <TableCell align="center">Called</TableCell>
+              <TableCell align="center">Seated</TableCell>
+            </TableRow>
+          )}
         </TableHead>
         <TableBody>
           {tableItems &&
