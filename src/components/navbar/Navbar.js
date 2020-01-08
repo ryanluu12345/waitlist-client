@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   margins: {
+    fontWeight: "500",
     margin: "0 10px"
   },
   link: {
@@ -50,9 +51,11 @@ export default function Navbar() {
                 Manage Waitlist
               </Link>
             </Typography>
-            <Link className={classes.link} to="/waitlist/Tasty Garden">
-              Join the Waitlist
-            </Link>
+            <Typography variant="p" className={classes.margins}>
+              <Link className={classes.link} to="/waitlist/Tasty Garden">
+                Join the Waitlist
+              </Link>
+            </Typography>
           </Grid>
         </Toolbar>
       </AppBar>
