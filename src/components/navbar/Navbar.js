@@ -14,9 +14,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontWeight: "800"
   },
-  whiteBg: {
-    background: "#fff",
-    color: "#282c34"
+  bg: {
+    background: "#1976d2",
+    color: "#fff"
   },
   nav: {
     justifyContent: "space-between",
@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.whiteBg} position="static">
+      <AppBar className={classes.bg} position="static">
         <Toolbar className={classes.nav}>
           <Typography variant="h5" className={classes.title}>
             <RestaurantIcon className={classes.margins} />
@@ -46,13 +46,13 @@ export default function Navbar() {
             </Link>
           </Typography>
           <Grid className={classes.navbarGrid}>
-            <Typography variant="p" className={classes.margins}>
-              <Link className={classes.link} to="/admin-waitlist/Tasty Garden">
+            <Typography variant="subtitle1" className={classes.margins}>
+              <Link className={classes.link} to="/admin-waitlist/Test">
                 Manage Waitlist
               </Link>
             </Typography>
-            <Typography variant="p" className={classes.margins}>
-              <Link className={classes.link} to="/waitlist/Tasty Garden">
+            <Typography variant="subtitle1" className={classes.margins}>
+              <Link className={classes.link} to="/waitlist/Test">
                 Join the Waitlist
               </Link>
             </Typography>
