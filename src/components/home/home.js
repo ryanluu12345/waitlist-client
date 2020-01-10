@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   makeStyles,
@@ -103,6 +103,8 @@ const data = [
 ];
 
 export default function Home() {
+  const [restaurantData, setRestaurantData] = useState(data);
+
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1
@@ -115,6 +117,9 @@ export default function Home() {
       padding: theme.spacing(2)
     },
     gridItem: {
+      [theme.breakpoints.down("sm")]: {
+        width: "82%"
+      },
       width: "60%"
     },
     inputRoot: {
@@ -131,6 +136,16 @@ export default function Home() {
   }));
   const classes = useStyles();
 
+  const handleInput = event => {
+    const searchValue = event.target.value.toLowerCase();
+    const newData = data.filter(
+      item =>
+        item.name.toLowerCase().indexOf(searchValue) != -1 ||
+        item.description.toLowerCase().indexOf(searchValue) != -1
+    );
+    setRestaurantData(newData);
+  };
+
   return (
     <Grid container direction="column" alignItems="center">
       <Grid
@@ -141,6 +156,7 @@ export default function Home() {
         justify="center"
       >
         <InputBase
+          onChange={handleInput}
           fullWidth={true}
           placeholder="Search…"
           classes={{
@@ -151,7 +167,7 @@ export default function Home() {
         />
       </Grid>
       <Grid className={classes.cardContainer} item>
-        {data.map(item => (
+        {restaurantData.map(item => (
           <SimpleCard
             id={item.id}
             name={item.name}
@@ -174,8 +190,8 @@ function SimpleCard(props) {
       marginBottom: 12
     },
     card: {
-      [theme.breakpoints.down("md")]: {
-        width: "80%"
+      [theme.breakpoints.down("sm")]: {
+        width: "90%"
       },
       width: "28%",
       margin: "10px"
