@@ -1,109 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-  useTheme
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-
-const data = [
-  {
-    id: "1",
-    name: "Tasty Garden",
-    description: "Chinese food done differently",
-    imgLink:
-      "https://cdn.vox-cdn.com/thumbor/zmmzoF3-DAlNrb66huJaQtG2Pso=/0x0:1000x667/1200x800/filters:focal(420x253:580x413)/cdn.vox-cdn.com/uploads/chorus_image/image/61169007/05_2013_CHI_LIN-5.0.0.1412884270.0.jpeg"
-  },
-  {
-    id: "2",
-    name: "Albertos",
-    description: "Carne asada better than ever",
-    imgLink:
-      "https://tornadoughalli.com/wp-content/uploads/2016/03/Carne-Asada-Fries.jpg"
-  },
-  {
-    id: "3",
-    name: "Boba Guys",
-    description: "SF's most hipster spot",
-    imgLink:
-      "https://images.squarespace-cdn.com/content/v1/50ce46ece4b01020c34fd52b/1537998860035-RM5X2404KB9TULLCLLM4/ke17ZwdGBToddI8pDm48kEiYbslFmXqxZW7MqMI8YSVZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwQxboqUzBAeBLrgWJDZBB-HRtjRoqhAGhrRQPIQzVAp20lhq6BYwyANd4d8_R4FaA/Screen+Shot+2018-09-26+at+2.52.49+PM.png"
-  },
-  {
-    id: "1",
-    name: "Tasty Garden",
-    description: "Chinese food done differently",
-    imgLink:
-      "https://cdn.vox-cdn.com/thumbor/zmmzoF3-DAlNrb66huJaQtG2Pso=/0x0:1000x667/1200x800/filters:focal(420x253:580x413)/cdn.vox-cdn.com/uploads/chorus_image/image/61169007/05_2013_CHI_LIN-5.0.0.1412884270.0.jpeg"
-  },
-  {
-    id: "2",
-    name: "Albertos",
-    description: "Carne asada better than ever",
-    imgLink:
-      "https://tornadoughalli.com/wp-content/uploads/2016/03/Carne-Asada-Fries.jpg"
-  },
-  {
-    id: "3",
-    name: "Boba Guys",
-    description: "SF's most hipster spot",
-    imgLink:
-      "https://images.squarespace-cdn.com/content/v1/50ce46ece4b01020c34fd52b/1537998860035-RM5X2404KB9TULLCLLM4/ke17ZwdGBToddI8pDm48kEiYbslFmXqxZW7MqMI8YSVZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwQxboqUzBAeBLrgWJDZBB-HRtjRoqhAGhrRQPIQzVAp20lhq6BYwyANd4d8_R4FaA/Screen+Shot+2018-09-26+at+2.52.49+PM.png"
-  },
-  {
-    id: "1",
-    name: "Tasty Garden",
-    description: "Chinese food done differently",
-    imgLink:
-      "https://cdn.vox-cdn.com/thumbor/zmmzoF3-DAlNrb66huJaQtG2Pso=/0x0:1000x667/1200x800/filters:focal(420x253:580x413)/cdn.vox-cdn.com/uploads/chorus_image/image/61169007/05_2013_CHI_LIN-5.0.0.1412884270.0.jpeg"
-  },
-  {
-    id: "2",
-    name: "Albertos",
-    description: "Carne asada better than ever",
-    imgLink:
-      "https://tornadoughalli.com/wp-content/uploads/2016/03/Carne-Asada-Fries.jpg"
-  },
-  {
-    id: "3",
-    name: "Boba Guys",
-    description: "SF's most hipster spot",
-    imgLink:
-      "https://images.squarespace-cdn.com/content/v1/50ce46ece4b01020c34fd52b/1537998860035-RM5X2404KB9TULLCLLM4/ke17ZwdGBToddI8pDm48kEiYbslFmXqxZW7MqMI8YSVZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwQxboqUzBAeBLrgWJDZBB-HRtjRoqhAGhrRQPIQzVAp20lhq6BYwyANd4d8_R4FaA/Screen+Shot+2018-09-26+at+2.52.49+PM.png"
-  },
-  {
-    id: "1",
-    name: "Tasty Garden",
-    description: "Chinese food done differently",
-    imgLink:
-      "https://cdn.vox-cdn.com/thumbor/zmmzoF3-DAlNrb66huJaQtG2Pso=/0x0:1000x667/1200x800/filters:focal(420x253:580x413)/cdn.vox-cdn.com/uploads/chorus_image/image/61169007/05_2013_CHI_LIN-5.0.0.1412884270.0.jpeg"
-  },
-  {
-    id: "2",
-    name: "Albertos",
-    description: "Carne asada better than ever",
-    imgLink:
-      "https://tornadoughalli.com/wp-content/uploads/2016/03/Carne-Asada-Fries.jpg"
-  },
-  {
-    id: "3",
-    name: "Boba Guys",
-    description: "SF's most hipster spot",
-    imgLink:
-      "https://images.squarespace-cdn.com/content/v1/50ce46ece4b01020c34fd52b/1537998860035-RM5X2404KB9TULLCLLM4/ke17ZwdGBToddI8pDm48kEiYbslFmXqxZW7MqMI8YSVZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwQxboqUzBAeBLrgWJDZBB-HRtjRoqhAGhrRQPIQzVAp20lhq6BYwyANd4d8_R4FaA/Screen+Shot+2018-09-26+at+2.52.49+PM.png"
-  }
-];
+import RestaurantCard from "./RestaurantCard";
+import testData from "../../tests/mock-data/mock-data";
 
 export default function Home() {
-  const [restaurantData, setRestaurantData] = useState(data);
+  const [restaurantData, setRestaurantData] = useState(
+    testData.restaurantTestData
+  );
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -138,7 +43,7 @@ export default function Home() {
 
   const handleInput = event => {
     const searchValue = event.target.value.toLowerCase();
-    const newData = data.filter(
+    const newData = testData.restaurantTestData.filter(
       item =>
         item.name.toLowerCase().indexOf(searchValue) != -1 ||
         item.description.toLowerCase().indexOf(searchValue) != -1
@@ -168,7 +73,7 @@ export default function Home() {
       </Grid>
       <Grid className={classes.cardContainer} item>
         {restaurantData.map(item => (
-          <SimpleCard
+          <RestaurantCard
             id={item.id}
             name={item.name}
             description={item.description}
@@ -177,75 +82,5 @@ export default function Home() {
         ))}
       </Grid>
     </Grid>
-  );
-}
-
-function SimpleCard(props) {
-  const { id, name, description, imgLink } = props;
-  const useStyles = makeStyles(theme => ({
-    title: {
-      fontSize: 14
-    },
-    pos: {
-      marginBottom: 12
-    },
-    card: {
-      [theme.breakpoints.down("sm")]: {
-        width: "90%"
-      },
-      width: "28%",
-      margin: "10px"
-    },
-    cardContent: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      textAlign: "center",
-      width: "100%",
-      padding: "15px 0"
-    },
-    cardImg: {
-      borderRadius: "5px",
-      objectFit: "cover",
-      height: "250px",
-      width: "80%"
-    },
-    cardAction: {
-      color: "#fff",
-      background: "#1976d2"
-    },
-    button: {
-      color: "#fff"
-    },
-    link: {
-      color: "inherit",
-      textDecoration: "none"
-    }
-  }));
-
-  const classes = useStyles();
-  const theme = useTheme();
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Card className={classes.card} style={{ display: "inline-block" }}>
-        <CardContent className={classes.cardContent}>
-          <Typography variant="h5" component="h2">
-            {name}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            {description}
-          </Typography>
-          <img className={classes.cardImg} src={imgLink} />
-        </CardContent>
-        <CardActions className={classes.cardAction}>
-          <Button className={classes.button} size="small">
-            <Link className={classes.link} to={"/waitlist/" + name}>
-              Join the Waitlist
-            </Link>
-          </Button>
-        </CardActions>
-      </Card>
-    </ThemeProvider>
   );
 }
