@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useGet, post, put, get } from "./networking-helper";
 
-const baseUrl = "https://4mdkymzgg5.execute-api.us-west-2.amazonaws.com/dev/";
+//TODO: move this to an env file or put in cloud formation and tie to serverless
+const baseUrl =
+  "https://y4fgu3fcwk.execute-api.us-east-1.amazonaws.com/develop/";
 const waitlist = "waitlist/";
 const restaurants = "restaurants/";
 const users = "users/";
@@ -20,4 +22,8 @@ export const addToWaitlist = body => {
 
 export const updateWaitlistStatus = (id, body) => {
   return put(baseUrl + waitlist + id, body);
+};
+
+export const getAllRestaurants = () => {
+  return get(baseUrl + restaurants);
 };

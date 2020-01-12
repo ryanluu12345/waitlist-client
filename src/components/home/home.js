@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import testData from "../../tests/mock-data/mock-data";
+import { getAllRestaurants } from "../../hooks/networking/waitlist-networking-helper";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import InputBase from "@material-ui/core/InputBase";
 import RestaurantCard from "./RestaurantCard";
-import testData from "../../tests/mock-data/mock-data";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function Home() {
-  const [restaurantData, setRestaurantData] = useState(
-    testData.restaurantTestData
-  );
+  const [restaurantData, setRestaurantData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getFromRestaurants = async () => {
+      try {
+        setIsLoading(true);
+        const res = await getAllRestaurants();
+        setRestaurantData(res ? res.data.data : []);
+      } catch (error) {
+        setError(error);
+      }
+      setIsLoading(false);
+    };
+    getFromRestaurants();
+  }, []);
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -37,10 +53,14 @@ export default function Home() {
     },
     cardContainer: {
       width: "90%"
+    },
+    spinnerBack: {
+      color: "#fff"
     }
   }));
   const classes = useStyles();
 
+  //TODO: update function to handle actual data from database. Search by name
   const handleInput = event => {
     const searchValue = event.target.value.toLowerCase();
     const newData = testData.restaurantTestData.filter(
@@ -71,13 +91,14 @@ export default function Home() {
           inputProps={{ "aria-label": "search" }}
         />
       </Grid>
+      {isLoading && <CircularProgress className={classes.spinnerBack} />}
       <Grid className={classes.cardContainer} item>
         {restaurantData.map(item => (
           <RestaurantCard
             id={item.id}
             name={item.name}
             description={item.description}
-            imgLink={item.imgLink}
+            imgLink={item.image}
           />
         ))}
       </Grid>
