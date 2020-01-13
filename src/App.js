@@ -5,6 +5,7 @@ import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
 import CustomerWaitlist from "./components/customer-waitlist/CustomerWaitlist";
 import AdminWaitlist from "./components/admin-waitlist/AdminWaitlist";
+import RestaurantAdd from "./components/restaurant-add/RestaurantAdd";
 
 import "./App.css";
 
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/waitlist/:restaurant" component={CustomerWaitlist} />
           <Route path="/admin-waitlist/:restaurant" component={AdminWaitlist} />
+          <Route path="/add-restaurant" component={RestaurantAdd} />
         </Switch>
       </Router>
     </div>

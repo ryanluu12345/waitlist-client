@@ -60,7 +60,7 @@ export default function AdminWaitlistTable(props) {
                     ? classes.greenBack
                     : ""
                 }
-                key={entry.id}
+                key={index}
               >
                 <TableCell align="center">
                   <PhoneRoundedIcon

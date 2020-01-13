@@ -27,6 +27,7 @@ export default function CustomerWaitlist() {
       width: "75%"
     },
     spinnerBack: {
+      margin: "10px 0",
       color: "#fff"
     }
   });

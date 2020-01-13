@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
-
 import {
   updateWaitlistStatus,
   getAllWaitlist
@@ -46,33 +45,39 @@ export default function AdminWaitlist() {
   });
   const classes = useStyles();
 
-  const handleCallClick = (index, id) => {
-    updateWaitlistStatus(id, {
-      status: {
-        ...waitlistItems[index].Status,
-        called: 1
-      }
-    }).then(res => {
+  const handleCallClick = async (index, id) => {
+    try {
+      const res = await updateWaitlistStatus(id, {
+        status: {
+          ...waitlistItems[index].Status,
+          called: 1
+        }
+      });
       const newItems = [...waitlistItems];
       newItems[index] = res.data.data.Attributes;
       setWaitlistItems(newItems);
-    });
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
   };
 
-  const handleSeatedClick = (index, id) => {
-    updateWaitlistStatus(id, {
-      status: {
-        ...waitlistItems[index].Status,
-        seated: 1,
-        queued: 0
-      }
-    })
-      .then(res => {
-        const newItems = [...waitlistItems];
-        newItems[index] = res.data.data.Attributes;
-        setWaitlistItems(newItems);
-      })
-      .catch(err => console.log(err));
+  const handleSeatedClick = async (index, id) => {
+    try {
+      const res = await updateWaitlistStatus(id, {
+        status: {
+          ...waitlistItems[index].Status,
+          seated: 1,
+          queued: 0
+        }
+      });
+      const newItems = [...waitlistItems];
+      newItems[index] = res.data.data.Attributes;
+      setWaitlistItems(newItems);
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
   };
 
   return (
