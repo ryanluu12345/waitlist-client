@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from "react";
-import testData from "../../tests/mock-data/mock-data";
-import { getAllRestaurants } from "../../hooks/networking/waitlist-networking-helper";
+import {
+  getAllRestaurants,
+  getRestaurantsBySearchTerm
+} from "../../hooks/networking/waitlist-networking-helper";
+import useDebounce from "../../hooks/user-input/debounce";
 import { makeStyles } from "@material-ui/core/styles";
+
 import Grid from "@material-ui/core/Grid";
 import InputBase from "@material-ui/core/InputBase";
 import RestaurantCard from "./RestaurantCard";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [restaurantData, setRestaurantData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const debouncedSearchTerm = useDebounce(searchTerm, 325);
+
   useEffect(() => {
-    const getFromRestaurants = async () => {
+    const getFromRestaurants = async callback => {
       try {
         setIsLoading(true);
-        const res = await getAllRestaurants();
+        const res = await callback();
         setRestaurantData(res ? res.data.data : []);
       } catch (error) {
         setError(error);
       }
       setIsLoading(false);
     };
-    getFromRestaurants();
-  }, []);
+    !searchTerm
+      ? getFromRestaurants(() => getAllRestaurants())
+      : getFromRestaurants(() => getRestaurantsBySearchTerm(searchTerm));
+  }, [debouncedSearchTerm]);
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -60,15 +69,9 @@ export default function Home() {
   }));
   const classes = useStyles();
 
-  //TODO: update function to handle actual data from database. Search by name
   const handleInput = event => {
-    const searchValue = event.target.value.toLowerCase();
-    const newData = testData.restaurantTestData.filter(
-      item =>
-        item.name.toLowerCase().indexOf(searchValue) != -1 ||
-        item.description.toLowerCase().indexOf(searchValue) != -1
-    );
-    setRestaurantData(newData);
+    const searchValue = event.target.value;
+    setSearchTerm(searchValue);
   };
 
   return (
@@ -89,6 +92,7 @@ export default function Home() {
             input: classes.inputInput
           }}
           inputProps={{ "aria-label": "search" }}
+          value={searchTerm}
         />
       </Grid>
       {isLoading && <CircularProgress className={classes.spinnerBack} />}

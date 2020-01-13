@@ -27,3 +27,7 @@ export const updateWaitlistStatus = (id, body) => {
 export const getAllRestaurants = () => {
   return get(baseUrl + restaurants);
 };
+
+export const getRestaurantsBySearchTerm = searchTerm => {
+  return get(baseUrl + restaurants + `?searchTerm=${searchTerm}`);
+};
