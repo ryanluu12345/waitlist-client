@@ -1,4 +1,6 @@
 import React from "react";
+import useUserAuth from "../../hooks/context/useUserAuth";
+
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -34,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navbar() {
+  const { isLoggedIn } = useUserAuth();
   const classes = useStyles();
 
   return (
@@ -59,11 +62,20 @@ export default function Navbar() {
                 Join the Waitlist
               </Link>
             </Typography>
-            <Typography variant="subtitle1" className={classes.margins}>
-              <Link className={classes.link} to="/add-restaurant">
-                Add a Restaurant
-              </Link>
-            </Typography>
+            {isLoggedIn && (
+              <Typography variant="subtitle1" className={classes.margins}>
+                <Link className={classes.link} to="/add-restaurant">
+                  Add a Restaurant
+                </Link>
+              </Typography>
+            )}
+            {!isLoggedIn && (
+              <Typography variant="subtitle1" className={classes.margins}>
+                <Link className={classes.link} to="/login">
+                  Login
+                </Link>
+              </Typography>
+            )}
           </Grid>
         </Toolbar>
       </AppBar>

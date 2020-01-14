@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { useGet, post, put, get } from "./networking-helper";
 
 //TODO: move this to an env file or put in cloud formation and tie to serverless
