@@ -18,6 +18,7 @@ const useUserAuth = () => {
     isLoggedIn: state.isLoggedIn,
     isAdmin: state.isAdmin,
     token: state.token,
+    user: state.user,
     loginUser,
     logoutUser
   };

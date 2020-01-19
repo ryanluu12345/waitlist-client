@@ -45,11 +45,13 @@ export default function CustomerWaitlist() {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">
-      <JoinWaitlistModal
-        isModalShow={isModalShow}
-        handleModalCloseClick={handleModalCloseClick}
-        restaurant={restaurant}
-      />
+      {isModalShow && (
+        <JoinWaitlistModal
+          isModalShow={isModalShow}
+          handleModalCloseClick={handleModalCloseClick}
+          restaurant={restaurant}
+        />
+      )}
       <h2 className={classes.waitlistTitle}> {restaurant} Waitlist</h2>
       <Button
         onClick={handleWaitlistClick}

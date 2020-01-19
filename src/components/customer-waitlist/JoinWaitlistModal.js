@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useUserAuth from "../../hooks/context/useUserAuth";
 import { addToWaitlist } from "../../hooks/networking/waitlist-networking-helper";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,12 +10,25 @@ import Button from "@material-ui/core/Button";
 
 export default function JoinWaitlistModal(props) {
   const { isModalShow, handleModalCloseClick, restaurant } = props;
+  const { isLoggedIn, user } = useUserAuth();
+  const [error, setError] = useState(null);
   const [inputs, setInputs] = useState({
-    FirstName: "",
-    LastName: "",
-    PhoneNumber: "",
-    PartySize: 0
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    partySize: 0
   });
+
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      setInputs(state => ({
+        ...state,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber
+      }));
+    }
+  }, [user]);
 
   const useStyles = makeStyles(theme => ({
     centerModal: {
@@ -52,16 +66,21 @@ export default function JoinWaitlistModal(props) {
     });
   };
 
-  const handleSubmit = event => {
-    addToWaitlist({
-      ...inputs,
-      restaurant: "Tasty Garden"
-    })
-      .then(data => {
-        handleModalCloseClick(event);
-        window.location.reload(true);
-      })
-      .catch(err => console.log(err));
+  const handleSubmit = async event => {
+    try {
+      await addToWaitlist({
+        ...inputs,
+        restaurant: "Tasty Garden"
+      });
+      handleModalCloseClick(event);
+      window.location.reload(true);
+    } catch (err) {
+      if (err.response) {
+        setError(err.response.data.message);
+      } else {
+        setError(err.message);
+      }
+    }
   };
 
   return (
@@ -88,6 +107,7 @@ export default function JoinWaitlistModal(props) {
               className={classes.textField}
               label="First Name"
               variant="outlined"
+              defaultValue={inputs.firstName}
             />
             <TextField
               onChange={handleInput}
@@ -95,6 +115,7 @@ export default function JoinWaitlistModal(props) {
               className={classes.textField}
               label="Last Name"
               variant="outlined"
+              defaultValue={inputs.lastName}
             />
           </Grid>
           <Grid
@@ -110,6 +131,7 @@ export default function JoinWaitlistModal(props) {
               className={classes.textField}
               label="Phone Number"
               variant="outlined"
+              defaultValue={inputs.phoneNumber}
             />
             <TextField
               onChange={handleInput}
@@ -117,6 +139,7 @@ export default function JoinWaitlistModal(props) {
               className={classes.textField}
               label="Party Size"
               variant="outlined"
+              defaultValue={inputs.partySize}
             />
           </Grid>
           <Button
@@ -127,6 +150,7 @@ export default function JoinWaitlistModal(props) {
           >
             Submit
           </Button>
+          {error && <p>{error}</p>}
         </form>
       </div>
     </Modal>
