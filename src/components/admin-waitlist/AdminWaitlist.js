@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useHistory } from "react-router-dom";
+import useUserAuth from "../../hooks/context/useUserAuth";
 import {
   updateWaitlistStatus,
   getAllWaitlist
@@ -13,11 +15,15 @@ import AdminWaitlistTable from "./AdminWaitlistTable";
 
 export default function AdminWaitlist() {
   const { restaurant } = useParams();
+  const history = useHistory();
+  const { isAdmin } = useUserAuth();
   const [waitlistItems, setWaitlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!isAdmin) return history.push("/waitlist/Test");
+
     const getFromWaitlist = async () => {
       try {
         setIsLoading(true);

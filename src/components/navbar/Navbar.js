@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navbar() {
-  const { isLoggedIn } = useUserAuth();
+  const { isLoggedIn, logoutUser } = useUserAuth();
   const classes = useStyles();
 
   return (
@@ -73,6 +73,13 @@ export default function Navbar() {
               <Typography variant="subtitle1" className={classes.margins}>
                 <Link className={classes.link} to="/login">
                   Login
+                </Link>
+              </Typography>
+            )}
+            {isLoggedIn && (
+              <Typography variant="subtitle1" className={classes.margins}>
+                <Link className={classes.link} to="/login" onClick={logoutUser}>
+                  Logout
                 </Link>
               </Typography>
             )}

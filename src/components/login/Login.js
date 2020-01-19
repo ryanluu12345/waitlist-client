@@ -65,10 +65,10 @@ export default function Login() {
       const data = await loginUserAPI(inputs.email, inputs.password);
       const { token, user } = data.data.data;
       loginUser(user, token);
+      setIsLoading(false);
       history.push("/");
     } catch (err) {
       setError("Wrong password or email!");
-    } finally {
       setIsLoading(false);
     }
   };
