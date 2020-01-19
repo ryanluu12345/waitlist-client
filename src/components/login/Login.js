@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import useUserAuth from "../../hooks/context/useUserAuth";
+import { loginUserAPI } from "../../hooks/networking/user-networking-helper";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,11 +39,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Login() {
+  const history = useHistory();
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
   });
-  const { loginUser, logoutUser } = useUserAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const { loginUser } = useUserAuth();
   const classes = useStyles();
 
   const handleChange = event => {
@@ -51,14 +58,18 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    logoutUser();
-    if (inputs.email === "rnluu@uci.edu" && inputs.password === "password") {
-      loginUser(
-        { email: inputs.email, name: "Ryan" },
-        "askl4093lkfgj0-2p2xcdjgjkle"
-      );
+    try {
+      setIsLoading(true);
+      const data = await loginUserAPI(inputs.email, inputs.password);
+      const { token, user } = data.data.data;
+      loginUser(user, token);
+      history.push("/");
+    } catch (err) {
+      setError("Wrong password or email!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,6 +82,8 @@ export default function Login() {
         className={classes.content}
       >
         <Typography variant="h2">Login Here</Typography>
+        {isLoading && <CircularProgress />}
+        {error && error}
         <TextField
           name="email"
           onChange={handleChange}

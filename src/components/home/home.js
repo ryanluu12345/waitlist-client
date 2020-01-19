@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getAllRestaurants,
   getRestaurantsBySearchTerm
-} from "../../hooks/networking/waitlist-networking-helper";
+} from "../../hooks/networking/restaurant-networking-helper";
 import useDebounce from "../../hooks/user-input/debounce";
 import { makeStyles } from "@material-ui/core/styles";
 
