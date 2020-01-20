@@ -7,3 +7,7 @@ export const loginUserAPI = (email, password) => {
     password
   });
 };
+
+export const loginUserByTokenAPI = () => {
+  return post(baseUrl + login, null);
+};

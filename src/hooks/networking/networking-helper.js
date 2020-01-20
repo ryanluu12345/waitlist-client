@@ -27,7 +27,11 @@ export const get = url => {
 };
 
 export const post = (url, body) => {
-  return axios.post(url, body);
+  return axios.post(url, body, {
+    headers: {
+      Authorization: localStorage.getItem("token")
+    }
+  });
 };
 
 export const put = (url, body) => {

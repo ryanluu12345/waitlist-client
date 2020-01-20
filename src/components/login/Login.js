@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
+  error: {
+    color: "red"
+  },
   title: {
     fontWeight: "800"
   },
@@ -83,7 +86,6 @@ export default function Login() {
       >
         <Typography variant="h2">Login Here</Typography>
         {isLoading && <CircularProgress />}
-        {error && error}
         <TextField
           name="email"
           onChange={handleChange}
@@ -102,6 +104,11 @@ export default function Login() {
         <Button onClick={handleSubmit} className={classes.button}>
           Submit
         </Button>
+        {error && (
+          <Typography className={classes.error} variant="h6">
+            {error}
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
